@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -78,7 +79,10 @@ public class UserService implements IUserService {
 
     @Override
     public ResponseDTO getAllUsers() {
-        return null;
+        List<User> allUser = userRepo.findAll();
+        Map<String, Object> detail = new HashMap<>();
+        detail.put("users", allUser);
+        return ResponseDTO.success("Users fetched successfully", detail);
     }
 
     @Override

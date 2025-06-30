@@ -11,6 +11,7 @@ import com.progress.sprinthacking.Repo.RoleRepo;
 import com.progress.sprinthacking.Repo.UserRepo;
 import com.progress.sprinthacking.Services.Impl.IUserService;
 import com.progress.sprinthacking.Services.JWT.JWTService;
+import com.progress.sprinthacking.Utils.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,10 +53,15 @@ public class UserService implements IUserService {
         if(role.isEmpty()){
             return ResponseDTO.error("Role not found");
         }
+        boolean emailValid = EmailValidator.isValidEmail(userDTO.getEmail());
+        if (!emailValid) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
         User user = new User();
         user.setUserName(userDTO.getUserName());
         user.setPasswordHash(encoder.encode(userDTO.getPassword()));
         user.setRole(role.get());
+        user.setEmail(userDTO.getEmail());
         userRepo.save(user);
         Map<String, Object> detail = new HashMap<>();
         detail.put("user", user);

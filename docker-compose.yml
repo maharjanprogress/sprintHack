@@ -1,0 +1,26 @@
+
+services:
+  # This is the name of your service.
+  app:
+    # Build the Docker image from the Dockerfile in the current directory.
+    build: .
+    ports:
+      # Map the container's port 9030 to the host.
+      # Render will automatically handle exposing this to the internet on port 443 (HTTPS).
+      - "9030:9030"
+    environment:
+      # --- Database Configuration ---
+      # These values are derived from your Neon connection string.
+      # For better security, you should move these to Render's "Secret Files".
+      SPRING_DATASOURCE_URL: jdbc:postgresql://ep-super-glitter-a1mlhsda-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+      SPRING_DATASOURCE_USERNAME: neondb_owner
+      SPRING_DATASOURCE_PASSWORD: npg_kGSVXigr1T3Z
+
+      # --- LangChain4j Google AI API Key ---
+      # This MUST be set as a secret environment variable in your Render dashboard.
+      # Render will inject the value at runtime.
+      GOOGLE_AI_GEMINI_API_KEY: ${GOOGLE_AI_GEMINI_API_KEY}
+
+      # --- Server Port ---
+      # Ensures the application inside the container runs on the correct port.
+      SERVER_PORT: 9030

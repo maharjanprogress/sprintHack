@@ -30,11 +30,16 @@ FROM eclipse-temurin:21-jre
 # Set the working directory
 WORKDIR /app
 
+# --- BEST PRACTICE: Make the port configurable ---
+# Declare an argument for the port. It will default to 10000 if not provided.
+ARG PORT=9030
+
+# Expose the port that the container will listen on.
+# This uses the value from the ARG instruction above.
+EXPOSE $PORT
+
 # Copy the executable JAR from the 'builder' stage
 COPY --from=builder /app/target/*.jar app.jar
-
-# Expose the port the application runs on (from your application.properties)
-EXPOSE 9030
 
 # Set the command to run the application when the container starts
 ENTRYPOINT ["java", "-jar", "app.jar"]

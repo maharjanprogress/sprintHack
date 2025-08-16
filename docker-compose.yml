@@ -22,4 +22,4 @@ services:
 
       # --- Server Port ---
       # This now matches Render's behavior for consistency.
-      SERVER_PORT: ${PORT:-9030}
+      PORT: ${PORT:-9030}
